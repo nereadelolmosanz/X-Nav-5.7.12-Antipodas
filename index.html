@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
-  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"><html>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
 	<head>
- 		<title>Las Antipodas</title>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8"><html>
+    <title>Las Antipodas</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <style>
 			#mapGeo, #mapAnt {
@@ -11,63 +11,67 @@
 				height: 300px;
 			}
  		</style>
-	<body>
+	</head>
+	<body style="margin:30px;">
     <h2> Ejercicio 5.5.12 - Geolocalización de antípodas</h2>
     <!--Mensaje de comprobación de geolocalizacion-->
-    <p id="OK">Geolocalization: </p>
+    <p id="OK">Geolocalización: </p>
     </br></br>
-
-    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-      <p>Geolocalization</p>
-      <div>
-        <!--mapa de la ubicación actual-->
-        <p id='mapGeo'></p>
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <p>Tu geolocalización</p>
+        <div>
+          <!--mapa de la ubicación actual-->
+          <p id='mapGeo'></p>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <p>Sus antípodas</p>
+        <div >
+          <!--mapa de las antípodas-->
+          <p id='mapAnt'></p>
+        </div>
       </div>
     </div>
-    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-      <p>Antipodes</p>
-      <div>
-        <!--mapa de las antípodas-->
-        <p id='mapAnt'></p>
-      </div>
-    </div>
-  	<script type="text/javascript" charset="utf-8">
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeYvq-a2KE4eWp4y69zrh5gDplLUCQrMk&callback=initMap"
+      type="text/javascript"></script>
+    <script type="text/javascript" charset="utf-8">
       function changer(id, text){
           document.getElementById(id).innerHTML += text;
       };
       function geolocOK(){
           if (Modernizr.geolocation){
               changer("OK","su navegador soporta Geolocalización.");
-              navigator.geolocation.getCurrentPosition(position);
+              navigator.geolocation.getCurrentPosition(showMaps);
           }else{
               changer("OK","su navegador <b>no</b> soporta Geolocalización.");
           }
-      };
-      geolocOK();
+      }
 
-      var latitude = position.coords.latitude;
-    	var longitude = position.coords.longitude;
-      function initMap(){
-        var mapDiv = document.getElementById("mapGeo");
-				var map = new google.maps.Map(mapDiv, {
-					center: {lat: latitude, lng: longitude},
-					zoom: 15
-				});
-  		};
-      var findAntip = function(latitude,longitude){
-        longitude = 180 + longitude;
-        latitude = latitude * (-1);
-      };
-      function initMap(){
-        var mapDiv = document.getElementById("mapAnt");
-				var map = new google.maps.Map(mapDiv, {
-					center: {lat: latitude, lng: longitude},
-					zoom: 15
-				});
-      };
+      function showMaps(position) {
+          var latitude = position.coords.latitude;
+        	var longitude = position.coords.longitude;
+          function initMap(){
+            var mapDiv = document.getElementById("mapGeo");
+    				var map = new google.maps.Map(mapDiv, {
+    					center: {lat: latitude, lng: longitude},
+    					zoom: 15
+    				});
+      		};
+          function findAntip(latitude,longitude){
+            longitude = 180 + longitude;
+            latitude = latitude * (-1);
+          };
+          function initMap2(){
+            var mapDiv = document.getElementById("mapAnt");
+    				var map = new google.maps.Map(mapDiv, {
+    					center: {lat: latitude, lng: longitude},
+    					zoom: 15
+    				});
+      		};
+      }
+      geolocOK();
   	</script>
-    <!--script src="geoloc.js" type="text/javascript"></script-->
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeYvq-a2KE4eWp4y69zrh5gDplLUCQrMk&callback=initMap"
-      type="text/javascript"></script>
-	</body>
+
+  </body>
 </html>
