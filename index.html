@@ -6,40 +6,48 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"></link>
     <style>
+      body{
+        background-color: black;
+        color: white;
+        text-align: center;
+        margin-top: 100px;
+      }
 			#mapGeo, #mapAnt {
-				width:300px;
+				width: 400px;
 				height: 300px;
 			}
  		</style>
 	</head>
-	<body style="margin:30px;">
+	<body>
     <h2> Ejercicio 5.5.12 - Geolocalización de antípodas</h2>
-    <!--Mensaje de comprobación de geolocalizacion-->
-    <p id="OK">Geolocalización: </p>
     </br></br>
-    <div class="row">
+    <div class="row" style="margin-left: 100px;">
       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <p>Tu geolocalización</p>
+        <p id='geo' style="text-align: left;">Tu geolocalización</p>
         <div id='mapGeo'>
           <!--mapa de la ubicación actual-->
         </div>
       </div>
       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <p>Sus antípodas</p>
+        <p id='ant' style="text-align: left;">Sus antípodas</p>
         <div id='mapAnt'>
           <!--mapa de las antípodas-->
         </div>
       </div>
     </div>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBNIghvfn5srew-lxKBl3qv6FbYmy_RB9s&callback=initMap" type="text/javascript"></script>
+    </br></br>
+    <!--Mensaje de comprobación de geolocalizacion-->
+    <p id="OK">Geolocalización: </p>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBNIghvfn5srew-lxKBl3qv6FbYmy_RB9s" type="text/javascript"></script>
     <script type="text/javascript" charset="utf-8">
 
       function changer(id, text){
         document.getElementById(id).innerHTML += text;
       };
+
       function geolocOK(){
         if (Modernizr.geolocation){
-          changer("OK","su navegador soporta Geolocalización.");
+          changer("OK","su navegador <b>soporta</b> Geolocalización.");
           navigator.geolocation.getCurrentPosition(showMaps);
         }else{
           changer("OK","su navegador <b>no</b> soporta Geolocalización.");
@@ -49,28 +57,21 @@
       function showMaps(position) {
         var geo_lat = position.coords.latitude;
       	var geo_long = position.coords.longitude;
-        console.log("lat: ",geo_lat);
-        console.log("long: ",geo_long);
-        var ant_lat = position.coords.latitude * (-1);
-        var ant_long = position.coords.longitude + 180;
-        console.log("lat_2: ",ant_lat);
-        console.log("long_2: ",ant_long);
-
-
-          var divAnt = document.getElementById("mapAnt");
-  			  var mapAnt = new google.maps.Map(divAnt, {
-  					center: {lat: ant_lat, lng: ant_long},
-  					zoom: 5
-    		  });
-        console.log("ANT OK");
-
-
         var divGeo = document.getElementById("mapGeo");
         var mapGeo = new google.maps.Map(divGeo, {
           center: {lat: geo_lat, lng: geo_long},
           zoom: 15
         });
-        console.log("GEO OK");
+        changer("geo"," ("+geo_lat+", "+geo_long+"):");
+
+        var ant_lat = position.coords.latitude * (-1);
+        var ant_long = position.coords.longitude + 180;
+        var divAnt = document.getElementById("mapAnt");
+			  var mapAnt = new google.maps.Map(divAnt, {
+					center: {lat: ant_lat, lng: ant_long},
+					zoom: 7
+  		  });
+        changer("ant"," ("+ant_lat+", "+ant_long+"):");
 
       }
       geolocOK();
